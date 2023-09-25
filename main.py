@@ -74,6 +74,7 @@ if __name__ == '__main__':
 
     if args.action == 'extract_image_list':
         ExtractImageFactory.create_extractor(
+            self=None,
             subject=args.subject,
             image_type=args.type,
             output_dir=args.output_dir

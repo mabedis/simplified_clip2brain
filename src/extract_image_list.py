@@ -1,4 +1,4 @@
-"""Extract_image_list.py extracts coco ID."""
+"""Extract Image COCO_ID and Image Trial."""
 
 import os
 
@@ -11,7 +11,7 @@ from src.utils import utils
 class ExtractImageFactory:
     """Image extraction using Factory design pattern."""
 
-    def create_extractor(subject: int, image_type: str, output_dir: str):
+    def create_extractor(self, subject: int, image_type: str, output_dir: str):
         """Create image extractor.
 
         Args:
@@ -33,7 +33,7 @@ class ExtractImageFactory:
         elif image_type == 'trial':
             return ExtractImageTrial(subject=subject, output_dir=output_dir, stimuli=stimuli)
         else:
-            raise Exception('Invalid image type.')
+            raise ValueError(f'Invalid image type: {image_type}.')
 
 
 class ExtractImageCoco:
@@ -62,6 +62,6 @@ class ExtractImageTrial:
         self.result = np.array(all_rep_trials_list).T - 1
         np.save(
             os.path.join(
-                output_dir, f'output/trials_subj{subject}.npy'
-            ), self.result
+                output_dir, f'output/trials_subj{subject}.npy'),
+            self.result,
         )

@@ -4,6 +4,9 @@ This is the simplified version of CLIP2Brain.
 
 import argparse
 
+from src.utils import utils
+from src.extract_image_list import ExtractImageFactory
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -61,10 +64,20 @@ if __name__ == '__main__':
         ],
         help='By defaulf, `floc-bodies` will be chosen.',
     )
+    parser.add_argument(
+        '--output_dir',
+        type=str,
+        default='.',
+        help='By default, project\'s root directory will be the destination.'
+    )
     args = parser.parse_args()
 
     if args.action == 'extract_image_list':
-        print('extract_image_list ', args.subject, args.type)
+        ExtractImageFactory.create_extractor(
+            subject=args.subject,
+            image_type=args.type,
+            output_dir=args.output_dir
+        )
     elif args.action == 'extract_cortical_voxel':
         print('extract_cortical_voxel', args.subject, args.mask_only, args.roi)
     # elif ...

@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/simplified_clip2brain
+    command: >
+      sh -c "python3 main.py'

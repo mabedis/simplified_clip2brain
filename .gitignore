@@ -8,3 +8,6 @@ __pycache__/
 # Specific folders
 datasets
 output
+
+# Configurations
+tokens.txt

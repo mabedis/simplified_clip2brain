@@ -49,7 +49,7 @@ class ExtractImageCoco:
         self.result = np.array(image_id_list)
         np.save(
             os.path.join(
-                output_dir, f'output/coco_ID_of_repeats_subj{subject}.npy'),
+                output_dir, f'output/coco_ID_of_repeats_subj{subject:02}.npy'),
             self.result,
         )
 
@@ -64,6 +64,6 @@ class ExtractImageTrial:
         self.result = np.array(all_rep_trials_list).T - 1
         np.save(
             os.path.join(
-                output_dir, f'output/trials_subj{subject}.npy'),
+                output_dir, f'output/trials_subj{subject:02}.npy'),
             self.result,
         )

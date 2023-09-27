@@ -4,8 +4,8 @@ This is the simplified version of CLIP2Brain.
 
 import argparse
 
-from src.utils import utils
 from src.extract_image_list import ExtractImageFactory
+from src.extract_cortical_voxel import CorticalExtractionFactory
 
 
 if __name__ == '__main__':
@@ -17,14 +17,13 @@ if __name__ == '__main__':
         choices=[
             'extract_image_list',
             'extract_cortical_voxel',
-            # 'compute_ev',
-            # 'extract_clip_features',
-            # 'extract_features_across_models',
-            # 'run_modeling',
-            # 'analyze_clip_results',
-            # 'visualize_in_pycortex',
-            # 'analyze_clip_results',
-            # 'analyze_clip_results_with_PCA',
+            'compute_ev',
+            'extract_clip_features',
+            'extract_features_across_models',
+            'run_modeling',
+            'analyze_clip_results',
+            'visualize_in_pycortex',
+            'analyze_clip_results_with_PCA',
         ],
         help=('Choose an action against the dataset. By default, '
               '`extract_image_list` will be chosen.'),
@@ -37,6 +36,12 @@ if __name__ == '__main__':
         help='By default, `1` will be chosen',
     )
     parser.add_argument(
+        "--all_subj",
+        default=False,
+        action="store_true",
+        help="Extract cortical voxel for all subjects.",
+    )
+    parser.add_argument(
         '-t', '--type',
         type=str,
         default='trial',
@@ -44,9 +49,15 @@ if __name__ == '__main__':
         help='By default, `trial` will be chosen.',
     )
     parser.add_argument(
+        '--zscore_by_run',
+        default=False,
+        action='store_true',
+        help='Z-Score brain data by runs.',
+    )
+    parser.add_argument(
         '--mask_only',
         action="store_true",
-        help="Only extract roi mask but not voxel response",
+        help="Only extract roi mask but not voxel response.",
     )
     parser.add_argument(
         '--roi',
@@ -55,14 +66,59 @@ if __name__ == '__main__':
         choices=[
             'prf-eccrois',
             'prf-visualrois',
-            'floc-faces',
-            'floc-words',
-            'floc-places',
+            'corticalsulc',
             'floc-bodies',
-            'Kastner2015',
+            'floc-faces',
+            'floc-places',
+            'floc-words',
             'HCP_MMP1',
+            'Kastner2015',
+            'lh.corticalsulc',
+            'lh.floc-bodies',
+            'lh.floc-faces',
+            'lh.floc-places',
+            'lh.floc-words',
+            'lh.HCP_MMP1',
+            'lh.Kastner2015',
+            'lh.MTL',
+            'lh.nsdgeneral',
+            'lh.prf-eccrois',
+            'lh.prf-visualrois',
+            'lh.streams',
+            'lh.thalamus',
+            'MTL',
+            'nsdgeneral',
+            'prf-eccrois',
+            'prf-visualrois',
+            'rh.corticalsulc',
+            'rh.floc-bodies',
+            'rh.floc-faces',
+            'rh.floc-places',
+            'rh.floc-words',
+            'rh.HCP_MMP1',
+            'rh.Kastner2015',
+            'rh.MTL',
+            'rh.nsdgeneral',
+            'rh.prf-eccrois',
+            'rh.prf-visualrois',
+            'rh.streams',
+            'rh.thalamus',
+            'streams',
+            'thalamus',
         ],
-        help='By defaulf, `floc-bodies` will be chosen.',
+        help=('By defaulf, `floc-bodies` will be chosen.\n'
+              'Input arguments are the ROIs\' file names in '
+              'natural-scenes-dataset/nsddata/ppdata/subj{01}/func1pt8mm/roi'),
+    )
+    parser.add_argument(
+        '--zscored_input',
+        action='store_true',
+        help='',
+    )
+    parser.add_argument(
+        '--compute_ev',
+        action='store_true',
+        help='',
     )
     parser.add_argument(
         '--output_dir',
@@ -77,8 +133,33 @@ if __name__ == '__main__':
             self=None,
             subject=args.subject,
             image_type=args.type,
-            output_dir=args.output_dir
+            output_dir=args.output_dir,
         )
     elif args.action == 'extract_cortical_voxel':
-        print('extract_cortical_voxel', args.subject, args.mask_only, args.roi)
-    # elif ...
+        CorticalExtractionFactory.create_extractor(
+            self=None,
+            subject=args.subject,
+            all_subjects=args.all_subj,
+            roi=args.roi,
+            mask_only=args.mask_only,
+            zscore_by_run=args.zscore_by_run,
+            output_dir=args.output_dir,
+        )
+    # elif args.action == 'compute_ev':
+    #     print('compute_ev', args.subject, args.zscored_input, args.compute_ev)
+    # elif args.action == 'extract_clip_features':
+    #     print('extract_clip_features', args.subject, args.mask_only, args.roi)
+    # elif args.action == 'extract_features_across_models':
+    #     print('extract_features_across_models',
+    #           args.subject, args.mask_only, args.roi)
+    # elif args.action == 'run_modeling':
+    #     print('run_modeling', args.subject, args.mask_only, args.roi)
+    # elif args.action == 'analyze_clip_results':
+    #     print('analyze_clip_results', args.subject, args.mask_only, args.roi)
+    # elif args.action == 'visualize_in_pycortex':
+    #     print('visualize_in_pycortex', args.subject, args.mask_only, args.roi)
+    # elif args.action == 'analyze_clip_results_with_PCA':
+    #     print('analyze_clip_results_with_PCA',
+    #           args.subject, args.mask_only, args.roi)
+    else:
+        raise ValueError(f'Not a valid action: {args.action}')

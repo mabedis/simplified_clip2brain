@@ -27,7 +27,8 @@ class ExtractImageFactory:
         """
         stimuli_path = utils.GetNSD(section='DATA', entry='StimuliInfo')
         stimuli = pd.read_pickle(stimuli_path.get_dataset_path())
-        utils.check_dir_existence(path=os.path.join(output_dir, 'output'))
+        directory = utils.Directory(path=os.path.join(output_dir, 'output'))
+        directory.check_dir_existence()
 
         if image_type == 'cocoId':
             return ExtractImageCoco(subject=subject, output_dir=output_dir, stimuli=stimuli)
@@ -57,9 +58,9 @@ class ExtractImageTrial:
     """Extract image from trial."""
 
     def __init__(self, subject: int, output_dir: str, stimuli):
-        col_name = f"subject{subject}_rep{rep}"
         all_rep_trials_list = [list(
-            stimuli[col_name][stimuli[col_name] != 0]) for rep in range(3)]
+            stimuli[f"subject{subject}_rep{rep}"][stimuli[f"subject{subject}_rep{rep}"] != 0])
+            for rep in range(3)]
         self.result = np.array(all_rep_trials_list).T - 1
         np.save(
             os.path.join(

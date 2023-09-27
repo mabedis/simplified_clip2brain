@@ -14,6 +14,23 @@ def get_root_path() -> str:
     return os.path.dirname(__file__)[:index+22]
 
 
+def check_dir_existence(path: str) -> bool:
+    """Check whether the directory exists or not.
+    In case it doesn't exist, the directory will be created.
+
+    Args:
+        path (str): Path to the directory.
+
+    Returns:
+        bool: True if exists.
+    """
+    if not os.path.exists(path):
+        os.makedirs(path)
+        return False
+
+    return True
+
+
 class GetNSD:
     """Get NSD directories."""
 

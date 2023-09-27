@@ -27,6 +27,7 @@ class ExtractImageFactory:
         """
         stimuli_path = utils.GetNSD(section='DATA', entry='StimuliInfo')
         stimuli = pd.read_pickle(stimuli_path.get_dataset_path())
+        utils.check_dir_existence(path=os.path.join(output_dir, 'output'))
 
         if image_type == 'cocoId':
             return ExtractImageCoco(subject=subject, output_dir=output_dir, stimuli=stimuli)

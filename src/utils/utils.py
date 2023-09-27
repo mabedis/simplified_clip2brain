@@ -4,31 +4,33 @@ import os
 import configparser
 
 
-def get_root_path() -> str:
-    """Get prject's root directory path.
+class Directory:
+    """Directory jobs."""
 
-    Returns:
-        str: Project's root directory absolute path.
-    """
-    index = os.path.dirname(__file__).index('simplified_clip2brain/')
-    return os.path.dirname(__file__)[:index+22]
+    def __init__(self, path: str = None):
+        self.path = path
 
+    def get_root_path(self) -> str:
+        """Get prject's root directory path.
 
-def check_dir_existence(path: str) -> bool:
-    """Check whether the directory exists or not.
-    In case it doesn't exist, the directory will be created.
+        Returns:
+            str: Project's root directory absolute path.
+        """
+        index = os.path.dirname(__file__).index('simplified_clip2brain/')
+        return os.path.dirname(__file__)[:index+22]
 
-    Args:
-        path (str): Path to the directory.
+    def check_dir_existence(self) -> bool:
+        """Check whether the directory exists or not.
+        In case it doesn't exist, the directory will be created.
 
-    Returns:
-        bool: True if exists.
-    """
-    if not os.path.exists(path):
-        os.makedirs(path)
-        return False
+        Returns:
+            bool: True if exists.
+        """
+        if self.path and not os.path.exists(self.path):
+            os.makedirs(self.path)
+            return False
 
-    return True
+        return True
 
 
 class GetNSD:
@@ -46,4 +48,4 @@ class GetNSD:
         """
         config = configparser.ConfigParser()
         config.read("config.cfg")
-        return get_root_path() + config[self.section][self.entry]
+        return Directory().get_root_path() + config[self.section][self.entry]

@@ -37,7 +37,7 @@ class CorticalExtractionFactory:
                 subjects=subjects,
                 roi=roi,
                 output_dir=output_dir
-            )
+            ).extract_corital_mask()
         return ExtractVoxels(
             subjects=subjects,
             roi=roi,
@@ -50,33 +50,42 @@ class ExtractCorticalMask:
     """Extract Cortical Mask from the subjects."""
 
     def __init__(self, subjects: list, roi: str, output_dir: str):
-        _roi = utils.GetNSD(section='DATA', entry='PPdataPath')
-        _roi_path = _roi.get_dataset_path()
+        self.subjects = subjects
+        self.roi = roi
+        self.output_dir = output_dir
+        self._roi = utils.GetNSD(section='DATA', entry='PPdataPath')
+        self._roi_path = self._roi.get_dataset_path()
 
-        for subj in subjects:
+    def extract_corital_mask(self):
+        """Extract Cortical Mask.
+
+        Returns:
+            np.ndarray: Cortical Mask
+        """
+        for subj in self.subjects:
             directory = utils.Directory(path=os.path.join(
-                output_dir, f"output/voxels_masks/subj{subj}"))
+                self.output_dir, f"output/voxels_masks/subj{subj}"))
             directory.check_dir_existence()
 
             nsd_general_path = os.path.join(
-                _roi_path,
+                self._roi_path,
                 f"subj{subj:02}/func1pt8mm/roi/nsdgeneral.nii.gz"
             )
             nsd_general = nib.load(nsd_general_path)
             nsd_cortical_mat = nsd_general.get_fdata()
 
-            if roi in ("general", ""):
+            if self.roi in ("general", ""):
                 anat_mat = nsd_cortical_mat
             else:
                 roi_subj_path = os.path.join(
-                    _roi_path,
-                    f"subj{subj:02}/func1pt8mm/roi/{roi}.nii.gz"
+                    self._roi_path,
+                    f"subj{subj:02}/func1pt8mm/roi/{self.roi}.nii.gz"
                 )
                 anat = nib.load(roi_subj_path)
                 anat_mat = anat.get_fdata()
 
-            roi_tag = "_" + roi if roi else ""
-            if roi == "":  # cortical
+            roi_tag = "_" + self.roi if self.roi else ""
+            if self.roi == "":  # cortical
                 mask = anat_mat > -1
             else:  # roi
                 mask = anat_mat > 0
@@ -95,7 +104,7 @@ class ExtractCorticalMask:
                 )  # check the roi 1D length is same as cortical numbers in NSD general
                 np.save(
                     os.path.join(
-                        output_dir,
+                        self.output_dir,
                         f"output/voxels_masks/subj{subj}/roi_1d_mask_subj{subj:02}{roi_tag}.npy"
                     ),
                     roi_1d_mask,
@@ -103,12 +112,12 @@ class ExtractCorticalMask:
 
             np.save(
                 os.path.join(
-                    output_dir,
+                    self.output_dir,
                     f"output/voxels_masks/subj{subj}/cortical_mask_subj{subj:02}{roi_tag}.npy"
                 ),
                 mask,
             )
-            # return mask
+            return mask
 
 
 class ExtractVoxels:
@@ -140,10 +149,12 @@ class ExtractVoxels:
                     ))
                 except FileNotFoundError:
                     mask = ExtractCorticalMask(
-                        subjects=subjects, roi=roi, output_dir=output_dir)
+                        subjects=subjects, roi=roi, output_dir=output_dir
+                    ).extract_corital_mask()
 
             cortical_beta_mat = None
-            for ses in tqdm(range(1, 2)):
+            # NOTE: Just for test, otherwise it should be changed to (1, 9)
+            for ses in tqdm(range(1, 3)):
                 try:
                     beta_file = nib.load(
                         os.path.join(

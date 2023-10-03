@@ -25,6 +25,9 @@ By default, no parameter is needed. In this case, the following action and param
 
     * > `python3 main.py --action extract_cortical_voxel`
     * > `python3 main.py --action extract_cortical_voxel --roi floc-bodies`
+    * > `python3 main.py --action extract_cortical_voxel --roi floc-bodies --zscore_by_run`
     * > `python3 main.py --action extract_cortical_voxel --mask_only --roi floc-bodies`
 
 ## Sources
+- [![DOI](https://zenodo.org/badge/663684836.svg)](https://zenodo.org/badge/latestdoi/663684836)
+- [CLIP2Brain](https://github.com/ariaaay/clip2brain/tree/main)

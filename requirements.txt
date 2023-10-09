@@ -14,11 +14,12 @@ scikit-image
 scikit-learn
 scipy
 seaborn
-setuptools
+# setuptools
 statsmodels
 timm
 torchextractor
 torchgel
 tqdm
-wget
-wheel
+pytest==7.4.2
+# wget
+# wheel

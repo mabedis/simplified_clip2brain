@@ -6,6 +6,7 @@ import argparse
 
 from src.extract_image_list import ExtractImageFactory
 from src.extract_cortical_voxel import CorticalExtractionFactory
+from src.compute_ev import EVFactory
 
 
 if __name__ == '__main__':
@@ -121,6 +122,27 @@ if __name__ == '__main__':
         help='',
     )
     parser.add_argument(
+        '--roi_only',
+        action='store_true',
+        help='',
+    )
+    parser.add_argument(
+        '--bias_corr',
+        action='store_true',
+        help='',
+    )
+    parser.add_argument(
+        '--compute_sample_ev',
+        action='store_true',
+        help='',
+    )
+    parser.add_argument(
+        '--roi_for_sample_ev',
+        type=str,
+        default=None,
+        help='',
+    )
+    parser.add_argument(
         '--output_dir',
         type=str,
         default='.',
@@ -145,8 +167,18 @@ if __name__ == '__main__':
             zscore_by_run=args.zscore_by_run,
             output_dir=args.output_dir,
         )
-    # elif args.action == 'compute_ev':
-    #     print('compute_ev', args.subject, args.zscored_input, args.compute_ev)
+    elif args.action == 'compute_ev':
+        EVFactory.create_ev(
+            self=None,
+            subject=args.subject,
+            zscored_input=args.zscored_input,
+            compute_ev=args.compute_ev,
+            roi_only=args.roi_only,
+            bias_corr=args.bias_corr,
+            compute_sample_ev=args.compute_sample_ev,
+            roi_for_sample_ev=args.roi_for_sample_ev,
+            output_dir=args.output_dir,
+        )
     # elif args.action == 'extract_clip_features':
     #     print('extract_clip_features', args.subject, args.mask_only, args.roi)
     # elif args.action == 'extract_features_across_models':

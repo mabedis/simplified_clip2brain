@@ -6,4 +6,4 @@ services:
     volumes:
       - .:/simplified_clip2brain
     command: >
-      sh -c "python3 main.py'
+      sh -c "python3 main.py"

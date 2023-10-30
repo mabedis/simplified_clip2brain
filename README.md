@@ -4,6 +4,9 @@
 
 ## Installation
 
+Note that to install CLIP using pip, try to install it directly from the OpenAI CLIP repo.
+The command `pip install clip` may install a different module that has nothing to do with Contrastive Language-Image Pre-Training (CLIP).
+
 ## How to use
 
 By default, no parameter is needed. In this case, the following action and parameters are selected by default.

@@ -25,6 +25,9 @@ RUN apt-get install python3-pip -y
 RUN pip3 install --upgrade pip
 RUN pip install --upgrade pip setuptools wheel
 
+# Install latest version of CLIP module from repo.
+RUN pip install git+https://github.com/openai/CLIP.git
+
 # # Switch back to root to clean up after the build process
 # USER root
 # RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt/lists/*

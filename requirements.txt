@@ -19,6 +19,7 @@ statsmodels
 timm
 torchextractor
 torchgel
+transformers
 tqdm
 pytest==7.4.2
 # wget

@@ -32,11 +32,17 @@ By default, no parameter is needed. In this case, the following action and param
     * > `python3 main.py --action extract_cortical_voxel --mask_only --roi floc-bodies`
 
 3. Compute EV:
+
     * Compute explainable variance for the data and output data averaged by repeats
     * > `python main.py --action compute_ev --subject 1 --zscored_input --compute_ev`
     * > `python main.py --action compute_ev --subject 1 --compute_ev`
     * > `python main.py --action compute_ev --subject 1 --zscored_input --compute_ev --compute_sample_ev`
     * > `python main.py --action compute_ev --subject 1 --compute_ev --compute_sample_ev`
+
+5. Extract CLIP Features:
+
+    * > `python main.py --action extract_clip_features`
+    * > `python main.py --action extract_clip_features [--subject 1] | [--output_dir <path to output_dir>] | [--feature_dir <path to feature_dir>]`
 
 ## Sources
 - [![DOI](https://zenodo.org/badge/663684836.svg)](https://zenodo.org/badge/latestdoi/663684836)

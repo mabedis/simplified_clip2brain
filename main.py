@@ -4,9 +4,10 @@ This is the simplified version of CLIP2Brain.
 
 import argparse
 
+from src.compute_ev import EVFactory
+from src.extract_clip_features import ExtractFeatures
 from src.extract_image_list import ExtractImageFactory
 from src.extract_cortical_voxel import CorticalExtractionFactory
-from src.compute_ev import EVFactory
 
 
 if __name__ == '__main__':
@@ -143,6 +144,12 @@ if __name__ == '__main__':
         help='',
     )
     parser.add_argument(
+        '--feature_dir',
+        type=str,
+        default='.',
+        help='',
+    )
+    parser.add_argument(
         '--output_dir',
         type=str,
         default='.',
@@ -179,8 +186,12 @@ if __name__ == '__main__':
             roi_for_sample_ev=args.roi_for_sample_ev,
             output_dir=args.output_dir,
         )
-    # elif args.action == 'extract_clip_features':
-    #     print('extract_clip_features', args.subject, args.mask_only, args.roi)
+    elif args.action == 'extract_clip_features':
+        ExtractFeatures(
+            subject=args.subject,
+            output_dir=args.output_dir,
+            feature_dir=args.feature_dir,
+        )
     # elif args.action == 'extract_features_across_models':
     #     print('extract_features_across_models',
     #           args.subject, args.mask_only, args.roi)
